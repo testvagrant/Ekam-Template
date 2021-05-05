@@ -1,0 +1,134 @@
+plugins {
+    id 'java'
+    id "io.qameta.allure" version "2.8.1"
+}
+
+group 'template.ekam'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+    maven { url "http://palantir.bintray.com/releases" }
+}
+
+dependencies {
+    implementation('com.testvagrant.ekam:ekam:0.0.1-alpha')
+}
+
+
+tasks.withType(Test) {
+    systemProperties = [
+            apiConfig             : System.getProperty('apiConfig', 'apiConfig'),
+            dbConfig              : System.getProperty('dbConfig', 'dbConfig'),
+            env                   : System.getProperty('env'),
+
+            tags                  : System.getProperty('tags', 'smoke'),
+            logs                  : System.getProperty('logs', 'false'),
+            timeline              : System.getProperty('timeline', 'true'),
+
+            browser               : System.getProperty('browser', 'chrome'),
+            headless              : System.getProperty('headless', 'false'),
+            webFeed               : System.getProperty('webFeed', 'testFeed'),
+
+            //mobile
+            mobileFeed            : System.getProperty('mobileFeed', 'calculator'),
+            hub                   : System.getProperty('hub', 'browserstack'),
+            target                : System.getProperty('target', 'android'),
+            runMode               : System.getProperty('runMode', 'local'),
+
+            //Report
+            slackNotif            : System.getProperty('slackNotif', 'false'), //Global => On Failures
+            slackNotifyMeEverytime: System.getProperty('slackNotifyMeEverytime', 'false')
+    ]
+}
+
+task runWebTests(type: Test) {
+    outputs.upToDateWhen { false }
+    useTestNG {
+        parallel = "classes"
+        threadCount = 1
+        includeGroups System.getProperty("tags", "web")
+        testLogging.showStandardStreams = true
+        useDefaultListeners true
+        listeners << 'com.testvagrant.ekam.web.listeners.WebDriverListener'
+        listeners << 'com.testvagrant.ekam.commons.listeners.LogListener'
+        listeners << 'com.testvagrant.ekam.integrations.slack.SlackListener'
+        listeners << 'com.testvagrant.ekam.commons.listeners.ReportListener'
+        listeners << 'com.testvagrant.ekam.commons.listeners.OptimusDashboardListener'
+        outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
+    }
+}
+
+task runMobileTests(type: Test) {
+    outputs.upToDateWhen { false }
+    useTestNG {
+        parallel = "methods"
+        threadCount = 1
+        includeGroups System.getProperty("tags", "mobile")
+        testLogging.showStandardStreams = true
+        useDefaultListeners true
+        listeners << 'com.testvagrant.ekam.mobile.listeners.MobileDriverListener'
+        listeners << 'com.testvagrant.ekam.commons.listeners.LogListener'
+        listeners << 'com.testvagrant.ekam.commons.listeners.ReportListener'
+        listeners << 'com.testvagrant.ekam.integrations.slack.SlackListener'
+        listeners << 'com.testvagrant.ekam.commons.listeners.OptimusDashboardListener'
+        outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
+    }
+}
+
+task runApiTests(type: Test) {
+    outputs.upToDateWhen { false }
+    useTestNG {
+        parallel = "classes"
+        threadCount = 1
+        includeGroups System.getProperty("tags", "api")
+        testLogging.showStandardStreams = true
+        useDefaultListeners true
+        listeners << 'com.testvagrant.ekam.integrations.slack.SlackListener'
+        outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
+    }
+}
+
+allure {
+    version = '2.8.1'
+    autoconfigure = true
+    aspectjweaver = true
+    allureJavaVersion = '2.10.0'
+    reportDir = new File(project.projectDir as File, '/allure-report/ui')
+    resultsDir = new File(project.projectDir as File, '/allure-report/results')
+    clean = true
+}
+
+
+task createReportDir() {
+    doLast {
+        def file = new File(project.projectDir as File, '/allure-report/ui')
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+}
+
+task saveHistory(type: Copy) {
+    from new File(project.projectDir as File, '/allure-report/ui/history')
+    into new File(project.projectDir as File, '/allure-report/results/history')
+}
+
+
+
+clean {
+    if (!System.getenv('CI')) {
+        delete "$projectDir/allure-report"
+    }
+}
+
+// Execution Rules
+tasks.runWebTests.dependsOn 'clean', 'build', 'createReportDir'
+tasks.runMobileTests.dependsOn 'clean', 'build', 'createReportDir'
+tasks.runApiTests.dependsOn 'clean', 'build', 'createReportDir'
+tasks.build.mustRunAfter 'clean'
+tasks.runWebTests.finalizedBy('allureGenerate')
+tasks.runMobileTests.finalizedBy('allureGenerate')
+tasks.runApiTests.finalizedBy('allureGenerate')

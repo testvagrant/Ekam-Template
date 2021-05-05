@@ -1,0 +1,35 @@
+{
+  "siteConfig": {
+    "url": "<siteUrl>",
+    "title": "<siteTitle>",
+    "wait": 0
+  },
+  "targets": [
+    {
+      "target": "<browser1>",
+      "desiredCapabilities": {
+      },
+      "arguments": [
+      ],
+      "preferences": {
+      },
+      "extensions": [
+      ],
+      "experimentalOptions": {
+      }
+    },
+    {
+      "target": "<browser2>",
+      "desiredCapabilities": {
+      },
+      "arguments": [
+      ],
+      "preferences": {
+      },
+      "extensions": [
+      ],
+      "experimentalOptions": {
+      }
+    }
+  ]
+}
