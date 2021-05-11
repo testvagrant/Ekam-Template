@@ -3,7 +3,7 @@ plugins {
     id "io.qameta.allure" version "2.8.1"
 }
 
-group 'template.ekam'
+group 'ekam.example'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -14,7 +14,21 @@ repositories {
 }
 
 dependencies {
-    implementation('com.testvagrant.ekam:ekam:0.0.1-alpha')
+    // ekam
+    implementation('com.testvagrant.ekam:ekam:0.0.3-alpha')
+    implementation('io.appium:java-client:7.5.1')
+
+    // selenium
+    implementation('org.seleniumhq.selenium:selenium-java:3.141.59')
+
+    // google
+    implementation('com.google.guava:guava:28.0-jre')
+    implementation('com.google.inject:guice:4.2.3')
+
+    // Test frameworks
+    testImplementation('org.testng:testng:6.14.3')
+    testImplementation('io.cucumber:cucumber-java:4.8.1')
+    testImplementation('io.cucumber:cucumber-testng:4.8.1')
 }
 
 
@@ -29,14 +43,15 @@ tasks.withType(Test) {
             timeline              : System.getProperty('timeline', 'true'),
 
             browser               : System.getProperty('browser', 'chrome'),
-            headless              : System.getProperty('headless', 'false'),
-            webFeed               : System.getProperty('webFeed', 'testFeed'),
+            headless              : System.getProperty('headless', 'true'),
+            webFeed               : System.getProperty('webFeed', 'webTestFeed'),
 
             //mobile
-            mobileFeed            : System.getProperty('mobileFeed', 'calculator'),
+            mobileFeed            : System.getProperty('mobileFeed', 'mobileTestFeed'),
             hub                   : System.getProperty('hub', 'browserstack'),
             target                : System.getProperty('target', 'android'),
             runMode               : System.getProperty('runMode', 'local'),
+            switchView            : System.getProperty("switchView", "false"),
 
             //Report
             slackNotif            : System.getProperty('slackNotif', 'false'), //Global => On Failures
@@ -47,15 +62,13 @@ tasks.withType(Test) {
 task runWebTests(type: Test) {
     outputs.upToDateWhen { false }
     useTestNG {
-        parallel = "classes"
-        threadCount = 1
+        parallel = "methods"
+        threadCount = 2
         includeGroups System.getProperty("tags", "web")
         testLogging.showStandardStreams = true
         useDefaultListeners true
         listeners << 'com.testvagrant.ekam.web.listeners.WebDriverListener'
-        listeners << 'com.testvagrant.ekam.commons.listeners.LogListener'
         listeners << 'com.testvagrant.ekam.integrations.slack.SlackListener'
-        listeners << 'com.testvagrant.ekam.commons.listeners.ReportListener'
         listeners << 'com.testvagrant.ekam.commons.listeners.OptimusDashboardListener'
         outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
     }
@@ -65,13 +78,11 @@ task runMobileTests(type: Test) {
     outputs.upToDateWhen { false }
     useTestNG {
         parallel = "methods"
-        threadCount = 1
+        threadCount = 2
         includeGroups System.getProperty("tags", "mobile")
         testLogging.showStandardStreams = true
         useDefaultListeners true
         listeners << 'com.testvagrant.ekam.mobile.listeners.MobileDriverListener'
-        listeners << 'com.testvagrant.ekam.commons.listeners.LogListener'
-        listeners << 'com.testvagrant.ekam.commons.listeners.ReportListener'
         listeners << 'com.testvagrant.ekam.integrations.slack.SlackListener'
         listeners << 'com.testvagrant.ekam.commons.listeners.OptimusDashboardListener'
         outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
@@ -117,7 +128,6 @@ task saveHistory(type: Copy) {
 }
 
 
-
 clean {
     if (!System.getenv('CI')) {
         delete "$projectDir/allure-report"
@@ -129,6 +139,6 @@ tasks.runWebTests.dependsOn 'clean', 'build', 'createReportDir'
 tasks.runMobileTests.dependsOn 'clean', 'build', 'createReportDir'
 tasks.runApiTests.dependsOn 'clean', 'build', 'createReportDir'
 tasks.build.mustRunAfter 'clean'
-tasks.runWebTests.finalizedBy('allureGenerate')
-tasks.runMobileTests.finalizedBy('allureGenerate')
-tasks.runApiTests.finalizedBy('allureGenerate')
+tasks.runWebTests.finalizedBy('allureReport')
+tasks.runMobileTests.finalizedBy('allureReport')
+tasks.runApiTests.finalizedBy('allureReport')

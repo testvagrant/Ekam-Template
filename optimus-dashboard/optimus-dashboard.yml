@@ -1,0 +1,33 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=optimus
+    ports:
+      - "27017:27017"
+
+  optimusServices:
+    image: testvagrant/optimus-services
+    ports:
+      - "8090:8093"
+    environment:
+      - database=optimus
+      - uri=mongodb://mongo:27017
+      - port=8093
+    restart: always
+    depends_on:
+      - mongo
+
+  optimusDashboard:
+    image: testvagrant/optimus-functional-dashboard
+    ports:
+      - "9901:9900"
+    environment:
+      - DE_ENV=production
+      - DB_SERVER_URL=mongo:27017
+      - DB_NAME=optimus?authSource=admin
+    restart: always
+    depends_on:
+      - mongo

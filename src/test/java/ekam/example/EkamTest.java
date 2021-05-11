@@ -1,4 +1,4 @@
-package com.testvagrant.ekamTemplate;
+package ekam.example;
 
 import com.testvagrant.ekam.api.modules.GrpcModule;
 import com.testvagrant.ekam.api.modules.PropertyModule;
