@@ -9,7 +9,7 @@ services:
       - "27017:27017"
 
   optimusServices:
-    image: testvagrant/optimus-services
+    image: tvekam/optimus-services
     ports:
       - "8090:8093"
     environment:
@@ -21,7 +21,7 @@ services:
       - mongo
 
   optimusDashboard:
-    image: testvagrant/optimus-functional-dashboard
+    image: tvekam/optimus-dashboard
     ports:
       - "9901:9900"
     environment:

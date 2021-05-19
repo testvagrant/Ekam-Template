@@ -8,7 +8,6 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    mavenLocal()
     jcenter()
     maven { url "http://palantir.bintray.com/releases" }
 }
@@ -17,6 +16,7 @@ dependencies {
     // ekam
     implementation('com.testvagrant.ekam:ekam:0.0.3-alpha')
     implementation('io.appium:java-client:7.5.1')
+    implementation('com.testvagrant.ekam:ekam-api:0.0.2-alpha')
 
     // selenium
     implementation('org.seleniumhq.selenium:selenium-java:3.141.59')
@@ -29,6 +29,17 @@ dependencies {
     testImplementation('org.testng:testng:6.14.3')
     testImplementation('io.cucumber:cucumber-java:4.8.1')
     testImplementation('io.cucumber:cucumber-testng:4.8.1')
+
+    // square
+    implementation('com.squareup.retrofit2:retrofit:2.9.0')
+    implementation('com.squareup.retrofit2:converter-gson:2.9.0')
+    implementation('com.squareup.okhttp3:logging-interceptor:3.8.0')
+
+    //lombok
+    implementation('org.projectlombok:lombok:1.18.12')
+    annotationProcessor('org.projectlombok:lombok:1.18.12')
+    testImplementation('org.projectlombok:lombok:1.18.12')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.12')
 }
 
 
@@ -36,7 +47,6 @@ tasks.withType(Test) {
     systemProperties = [
             apiConfig             : System.getProperty('apiConfig', 'apiConfig'),
             dbConfig              : System.getProperty('dbConfig', 'dbConfig'),
-            env                   : System.getProperty('env'),
 
             tags                  : System.getProperty('tags', 'smoke'),
             logs                  : System.getProperty('logs', 'false'),
