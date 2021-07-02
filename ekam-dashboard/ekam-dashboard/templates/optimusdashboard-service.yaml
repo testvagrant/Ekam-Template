@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c -f ekam-dashboard.yml
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: optimusdashboard
+  name: optimusdashboard
+spec:
+  ports:
+    - name: "9901"
+      port: 9901
+      targetPort: 9900
+  selector:
+    io.kompose.service: optimusdashboard
+status:
+  loadBalancer: { }

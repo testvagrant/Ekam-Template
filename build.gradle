@@ -3,8 +3,10 @@ plugins {
     id "io.qameta.allure" version "2.8.1"
 }
 
-group 'ekam.example'
+group 'ekam.template'
 version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -14,16 +16,25 @@ repositories {
 
 dependencies {
     // ekam
-    implementation('com.testvagrant.ekam:ekam:0.0.3-alpha')
-    implementation('io.appium:java-client:7.5.1')
+    implementation('com.testvagrant.ekam:ekam:0.1.0-beta')
     implementation('com.testvagrant.ekam:ekam-api:0.0.2-alpha')
+    implementation('com.testvagrant.ekam:ekam-config:0.0.3-beta')
+    implementation('com.testvagrant.ekam:ekam-commons:0.0.5-beta')
+    implementation('com.testvagrant.ekam:ekam-atoms:0.0.2-alpha')
+
+
+    // appium
+    implementation('io.appium:java-client:7.5.1')
+
+    //AssertJ
+    implementation 'org.assertj:assertj-core:3.19.0'
 
     // selenium
     implementation('org.seleniumhq.selenium:selenium-java:3.141.59')
 
     // google
     implementation('com.google.guava:guava:28.0-jre')
-    implementation('com.google.inject:guice:4.2.3')
+    implementation('com.google.inject:guice:5.0.1')
 
     // Test frameworks
     testImplementation('org.testng:testng:6.14.3')
@@ -40,77 +51,108 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok:1.18.12')
     testImplementation('org.projectlombok:lombok:1.18.12')
     testAnnotationProcessor('org.projectlombok:lombok:1.18.12')
-}
 
+    // jdbi
+    implementation('org.jdbi:jdbi:2.78')
+
+    implementation('org.awaitility:awaitility:4.0.3')
+}
 
 tasks.withType(Test) {
     systemProperties = [
-            apiConfig             : System.getProperty('apiConfig', 'apiConfig'),
-            dbConfig              : System.getProperty('dbConfig', 'dbConfig'),
-
-            tags                  : System.getProperty('tags', 'smoke'),
-            logs                  : System.getProperty('logs', 'false'),
-            timeline              : System.getProperty('timeline', 'true'),
-
-            browser               : System.getProperty('browser', 'chrome'),
-            headless              : System.getProperty('headless', 'true'),
-            webFeed               : System.getProperty('webFeed', 'webTestFeed'),
-
-            //mobile
-            mobileFeed            : System.getProperty('mobileFeed', 'mobileTestFeed'),
-            hub                   : System.getProperty('hub', 'browserstack'),
-            target                : System.getProperty('target', 'android'),
-            runMode               : System.getProperty('runMode', 'local'),
-            switchView            : System.getProperty("switchView", "false"),
-
-            //Report
-            slackNotif            : System.getProperty('slackNotif', 'false'), //Global => On Failures
-            slackNotifyMeEverytime: System.getProperty('slackNotifyMeEverytime', 'false')
+            config         :  System.getProperty("config")
     ]
 }
 
 task runWebTests(type: Test) {
+    filter {
+        excludeTestsMatching "*.mobile.*"
+        excludeTestsMatching "*.api.*"
+        excludeTestsMatching "*.db.*"
+    }
     outputs.upToDateWhen { false }
     useTestNG {
         parallel = "methods"
-        threadCount = 2
+        threadCount Integer.parseInt(System.getProperty("sessions", "2"))
         includeGroups System.getProperty("tags", "web")
         testLogging.showStandardStreams = true
         useDefaultListeners true
-        listeners << 'com.testvagrant.ekam.web.listeners.WebDriverListener'
-        listeners << 'com.testvagrant.ekam.integrations.slack.SlackListener'
-        listeners << 'com.testvagrant.ekam.commons.listeners.OptimusDashboardListener'
         outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
     }
 }
 
-task runMobileTests(type: Test) {
+task runWebTestsOnCloud(type: Test) {
+    systemProperties = [
+            config         :  "web.remote"
+    ]
+    filter {
+        excludeTestsMatching "*.mobile.*"
+        excludeTestsMatching "*.api.*"
+        excludeTestsMatching "*.db.*"
+    }
     outputs.upToDateWhen { false }
     useTestNG {
         parallel = "methods"
-        threadCount = 2
+        threadCount Integer.parseInt(System.getProperty("sessions", "2"))
+        includeGroups System.getProperty("tags", "web")
+        testLogging.showStandardStreams = true
+        useDefaultListeners true
+        outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
+    }
+}
+
+task runMobileTestsOnCloud(type: Test) {
+    filter {
+        excludeTestsMatching "*.web.*"
+        excludeTestsMatching "*.api.*"
+        excludeTestsMatching "*.db.*"
+    }
+    outputs.upToDateWhen { false }
+    useTestNG {
+        parallel = "methods"
+        threadCount Integer.parseInt(System.getProperty("sessions", "4"))
         includeGroups System.getProperty("tags", "mobile")
         testLogging.showStandardStreams = true
         useDefaultListeners true
-        listeners << 'com.testvagrant.ekam.mobile.listeners.MobileDriverListener'
-        listeners << 'com.testvagrant.ekam.integrations.slack.SlackListener'
-        listeners << 'com.testvagrant.ekam.commons.listeners.OptimusDashboardListener'
         outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
     }
 }
 
 task runApiTests(type: Test) {
+    filter {
+        excludeTestsMatching "*.web.*"
+        excludeTestsMatching "*.mobile.*"
+        excludeTestsMatching "*.db.*"
+    }
     outputs.upToDateWhen { false }
     useTestNG {
-        parallel = "classes"
-        threadCount = 1
+        parallel = "methods"
+        threadCount Integer.parseInt(System.getProperty("sessions", "4"))
         includeGroups System.getProperty("tags", "api")
         testLogging.showStandardStreams = true
         useDefaultListeners true
-        listeners << 'com.testvagrant.ekam.integrations.slack.SlackListener'
         outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
     }
 }
+
+task runDbTests(type: Test) {
+    filter {
+        excludeTestsMatching "*.web.*"
+        excludeTestsMatching "*.mobile.*"
+        excludeTestsMatching "*.api.*"
+    }
+    outputs.upToDateWhen { false }
+    useTestNG {
+        parallel = "methods"
+        threadCount Integer.parseInt(System.getProperty("sessions", "4"))
+        includeGroups System.getProperty("tags", "db")
+        testLogging.showStandardStreams = true
+        useDefaultListeners true
+        outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
+    }
+}
+
+
 
 allure {
     version = '2.8.1'
@@ -141,14 +183,17 @@ task saveHistory(type: Copy) {
 clean {
     if (!System.getenv('CI')) {
         delete "$projectDir/allure-report"
+        delete "$projectDir/allure-results"
     }
 }
 
 // Execution Rules
 tasks.runWebTests.dependsOn 'clean', 'build', 'createReportDir'
-tasks.runMobileTests.dependsOn 'clean', 'build', 'createReportDir'
+tasks.runWebTestsOnCloud.dependsOn 'clean', 'build', 'createReportDir'
+tasks.runMobileTestsOnCloud.dependsOn 'clean', 'build', 'createReportDir'
 tasks.runApiTests.dependsOn 'clean', 'build', 'createReportDir'
 tasks.build.mustRunAfter 'clean'
 tasks.runWebTests.finalizedBy('allureReport')
-tasks.runMobileTests.finalizedBy('allureReport')
+tasks.runWebTestsOnCloud.finalizedBy('allureReport')
+tasks.runMobileTestsOnCloud.finalizedBy('allureReport')
 tasks.runApiTests.finalizedBy('allureReport')

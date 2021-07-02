@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c -f ekam-dashboard.yml
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: optimusdashboard
+  name: optimusdashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: optimusdashboard
+  strategy: { }
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c -f ekam-dashboard.yml
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: optimusdashboard
+    spec:
+      containers:
+        - env:
+            - name: DB_NAME
+              value: optimus?authSource=admin
+            - name: DB_SERVER_URL
+              value: mongo:27017
+            - name: DE_ENV
+              value: production
+          image: tvekam/optimus-dashboard
+          imagePullPolicy: ""
+          name: optimusdashboard
+          ports:
+            - containerPort: 9900
+          resources: { }
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: { }

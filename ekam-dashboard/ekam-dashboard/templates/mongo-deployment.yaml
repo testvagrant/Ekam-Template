@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c -f ekam-dashboard.yml
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mongo
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mongo
+  strategy: { }
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c -f ekam-dashboard.yml
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mongo
+    spec:
+      containers:
+        - env:
+            - name: MONGO_INITDB_DATABASE
+              value: optimus
+          image: mongo
+          imagePullPolicy: ""
+          name: mongo
+          ports:
+            - containerPort: 27017
+          resources: { }
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: { }
