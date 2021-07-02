@@ -1,0 +1,14 @@
+{
+  "desiredCapabilities": [
+    {
+      "app": "<app_name_with_extension>",
+      "platformName": "android",
+      "automationName": "UiAutomator2"
+    },
+    {
+      "app": "<app_name_with_extension>",
+      "platformName": "iOS",
+      "automationName": "XCUITest"
+    }
+  ]
+}
