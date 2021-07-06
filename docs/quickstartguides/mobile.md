@@ -2,6 +2,9 @@
 
 Let us do a quick swag mobile app login as part of this quick guide.
 
+## Pre-requisite
+* Connect a physical device or an emulator
+
 ## Step 1
 Download a sample android app
 ```bash

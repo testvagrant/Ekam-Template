@@ -81,7 +81,7 @@ Follow below quick start guides.
 
 * [Web](docs/quickstartguides/web.md)
 * [Mobile](docs/quickstartguides/mobile.md)
-* [Api]((docs/quickstartguides/api.md))
+* [Api](docs/quickstartguides/api.md)
 
 ## Examples
 [Ekam Examples](https://gitlab.com/testvagrant/automation-studio/ekam-studio/ekam-examples)

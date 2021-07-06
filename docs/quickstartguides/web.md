@@ -119,4 +119,4 @@ You will find that the tests now record a step and a screenshot
 
 Congratulations, you have successfully kick-started web automation with ekam.
 
-Read further to understand how to get started with Mobile and API. 
+Read further to understand how to get started with [Mobile](mobile.md) and [API](api.md). 
