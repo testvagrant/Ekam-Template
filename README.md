@@ -84,7 +84,7 @@ Follow below quick start guides.
 [Ekam Examples](https://gitlab.com/testvagrant/automation-studio/ekam-studio/ekam-examples)
 
 ## Issue Tracker
-[Ekam Issues](https://gitlab.com/testvagrant/automation-studio/issues-studio/ekam-issues/-/issues)
+[Ekam Issues](https://gitlab.com/testvagrant/automation-studio/issues-studio/ekam-beta/-/issues)
 
 ## Developers
  * [Sudarshan GS](sudarshan@testvagrant.com)
