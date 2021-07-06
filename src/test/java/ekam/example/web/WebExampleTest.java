@@ -8,9 +8,4 @@ import org.testng.annotations.Test;
 @Test(groups = "web")
 public class WebExampleTest extends WebTest {
 
-    @Test
-    public void searchTest() {
-        SearchPage searchPage = LayoutInitiator.Page(SearchPage.class);
-        searchPage.search("Hello Ekam!!!");
-    }
 }

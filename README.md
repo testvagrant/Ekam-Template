@@ -3,6 +3,9 @@ Ekam, a test automation platform, helps you to quickly get started with WEB | MO
 
 ## Prerequisites
 
++ #### Common 
+  * <a href="https://www.oracle.com/in/java/technologies/javase-jdk11-downloads.html" target="_blank">Java11</a>
+
 + ####  Mobile Automation
   * <a href="https://nodejs.org/en/download/" target="_blank">Node</a>
   * <a href="https://appium.io/docs/en/about-appium/getting-started/?lang=en" target="_blank">Appium</a>

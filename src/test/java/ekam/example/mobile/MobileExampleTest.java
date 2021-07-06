@@ -5,4 +5,5 @@ import org.testng.annotations.Test;
 
 @Test(groups = "mobile")
 public class MobileExampleTest extends MobileTest {
+
 }

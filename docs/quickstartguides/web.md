@@ -117,6 +117,6 @@ You will find that the tests now record a step and a screenshot
 
 ![](../assets/allure_report_with_screenshot.png)
 
-Congratulations, you have successfully kickstarted web automation with ekam.
+Congratulations, you have successfully kick-started web automation with ekam.
 
 Read further to understand how to get started with Mobile and API. 
