@@ -1,6 +1,6 @@
-# Web Quick Start Guide
+# Mobile Quick Start Guide
 
-Let us do a quick google search as part of this quick guide.
+Let us do a quick swag mobile app login as part of this quick guide.
 
 ## Step 1
 Download a sample android app
@@ -189,4 +189,4 @@ You will find that the tests now record a step and a screenshot
 
 Congratulations, you have successfully kick-started mobile automation with ekam.
 
-Read further to understand how to get started with Web and API. 
+Read further to understand how to get started with [Web](web.md) and [API](api.md). 

@@ -1,64 +1,99 @@
-# Web Quick Start Guide
+# Api Quick Start Guide
 
-Let us do a quick google search as part of this quick guide.
+We will use https://jsonplaceholder.typicode.com to create sample API tests.
 
 ## Step 1
-Update the `web.url` in `config/default.properties` from `http://ekam.testvagrant.ai` to `http://www.google.com`
-```properties
-web.url:http://www.google.com
+Create a file `hosts.json` in `src/test/resources`
+```json
+{
+  "baseUrl": "https://jsonplaceholder.typicode.com"
+}
 ```
 ## Step 2
-Lets create a page `SearchPage.java` in `src/test/java/web`. 
+Update the `default.properties` file with the hosts name
+```bash
+api.hosts:hosts
+```
 
+### Step 3
+Create a model called Post to capture response
 ```java
-public class SearchPage {
-    
+import lombok.*;
+
+@Getter
+@Setter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+public class Posts {
+    private String userId;
+    private String id;
+    private String title;
+    private String body;
 }
 ```
 
-### Step 2.1
-Ekam provides a base `WebPage` with many abstractions. Lets now extend the page to `WebPage`
-```java
-import com.testvagrant.ekam.web.WebPage;
+## Step 4
+Create a sample service in `src/test/java/api`
 
-public class SearchPage extends WebPage {
-    
+```java
+import retrofit2.Call;
+import retrofit2.http.GET;
+
+import java.util.List;
+
+public interface PostsService {
+    @GET("/posts")
+    Call<List<Posts>> getPosts();
 }
 ```
 
-### Step 2.2
-Now the page has access to many query functions to locate elements. Lets use `name=q` for google search box.
-```java
-import com.testvagrant.ekam.web.WebPage;
+## Step 5
+Create a sample client to consume the service
 
-public class SearchPage extends WebPage {
-    By name = queryByName("q");
-    
-    public void search(String query) {
-        textbox(name).setText(query);
+```java
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import com.testvagrant.ekam.api.retrofit.RetrofitBaseClient;
+import com.testvagrant.ekam.commons.annotations.APIStep;
+import retrofit2.Call;
+
+import java.util.List;
+
+public class PostsClient extends RetrofitBaseClient {
+    private final PostsService service;
+
+    @Inject
+    public PostsClient(@Named("baseUrl") String baseUrl) {
+        super(baseUrl);
+        service = httpClient.getService(PostsService.class);
+    }
+
+    @APIStep(description = "Get Posts")
+    public List<Posts> getPosts() {
+        Call<List<Posts>> call = service.getPosts();
+        return httpClient.execute(call);
     }
 }
 ```
-Here `textbox`, `element`, `table` etc are different abstractions over web elements. We believe these are safer to use and reduce test flakiness compared to using, page factories.
 
-## Step 3
-Let's now write a test to interact with the page.
-
-Add a new test in `src/test/web/WebExampleTest.java`.
-
+### Step 6
+Now lets write a test to interact with the client in `src/test/java/api/ApiExampleTest`
 ```java
 import com.testvagrant.ekam.commons.LayoutInitiator;
-import com.testvagrant.ekam.testBases.testng.WebTest;
-
+import com.testvagrant.ekam.testBases.testng.APITest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@Test(groups = "web")
-public class WebExampleTest extends WebTest {
+import java.util.List;
 
-    @Test
-    public void searchTest() {
-        SearchPage searchPage = LayoutInitiator.Page(SearchPage.class);
-        searchPage.search("Hello Ekam!!!");
+@Test(groups = "api")
+public class APIExampleTest extends APITest {
+
+    public void getPostsShouldReturnAValue() {
+        PostsClient postsClient = LayoutInitiator.Client(PostsClient.class);
+        List<Posts> posts = postsClient.getPosts();
+        Assert.assertTrue(posts.size() > 1);
     }
 }
 ```
@@ -66,7 +101,7 @@ public class WebExampleTest extends WebTest {
 ## Step 4
 Let now run the test. From your terminal execute
 ```$bash
-./gradlew clean build runWebTests
+./gradlew clean build runApiTests
 ```
 
 ## Step 5
@@ -77,46 +112,9 @@ Ekam by default generates an allure report. To view the recent run execute below
 The command once executed successfully will launch a report on your default browser.
 
 ![](../assets/allure_home_screen.png)
-![](../assets/allure_test_results.png)
+![](../assets/allure_api_reports.png)
 
-These are the bare minimum steps required to build and run web tests on ekam. But below are some additional steps to dive bit deeper into ekam features.
-## Run on different browsers
-By default, Ekam runs web tests on Chrome. To run on different browser or set a default browser, add a property `web.target` in `default.properties`
-```properties
-web.url:http://www.google.com
 
-# Supported values <any | chrome | firefox | msedge>
-web.target:firefox
-```
+Congratulations, you have successfully kick-started api automation with ekam.
 
-Now the tests will start executing on firefox.
-
-## Capture screenshot
-If you look at the allure reports, there are no steps recorded or any screenshot shown. To capture step metadata add a `@WebStep` to pages.
-
-```java
-import com.testvagrant.ekam.web.WebPage;
-
-public class SearchPage extends WebPage {
-    By name = queryByName("q");
-
-    @WebStep(keyword = "Given", description = "I search with query")
-    public void search(String query) {
-        textbox(name).setText(query);
-    }
-}
-```
-
-Now let's execute the tests again and view reports
-
-```$bash
-./gradlew clean build runWebTests && ./gradlew allureServe
-```
-
-You will find that the tests now record a step and a screenshot
-
-![](../assets/allure_report_with_screenshot.png)
-
-Congratulations, you have successfully kickstarted web automation with ekam.
-
-Read further to understand how to get started with Mobile and API. 
+Read further to understand how to get started with [Mobile](mobile.md) and [Web](web.md). 
