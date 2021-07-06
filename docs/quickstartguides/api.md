@@ -1,10 +1,12 @@
 # Web Quick Start Guide
 
-Let us do a quick google search as part of the quick guide.
+Let us do a quick google search as part of this quick guide.
 
 ## Step 1
 Update the `web.url` in `config/default.properties` from `http://ekam.testvagrant.ai` to `http://www.google.com`
-
+```properties
+web.url:http://www.google.com
+```
 ## Step 2
 Lets create a page `SearchPage.java` in `src/test/java/web`. 
 
@@ -74,9 +76,47 @@ Ekam by default generates an allure report. To view the recent run execute below
 ```
 The command once executed successfully will launch a report on your default browser.
 
-|![](../assets/allure_home_screen.png)     | ![](../assets/allure_test_results.png)     |
+![](../assets/allure_home_screen.png)
+![](../assets/allure_test_results.png)
 
+These are the bare minimum steps required to build and run web tests on ekam. But below are some additional steps to dive bit deeper into ekam features.
+## Run on different browsers
+By default, Ekam runs web tests on Chrome. To run on different browser or set a default browser, add a property `web.target` in `default.properties`
+```properties
+web.url:http://www.google.com
 
+# Supported values <any | chrome | firefox | msedge>
+web.target:firefox
+```
 
+Now the tests will start executing on firefox.
 
+## Capture screenshot
+If you look at the allure reports, there are no steps recorded or any screenshot shown. To capture step metadata add a `@WebStep` to pages.
 
+```java
+import com.testvagrant.ekam.web.WebPage;
+
+public class SearchPage extends WebPage {
+    By name = queryByName("q");
+
+    @WebStep(keyword = "Given", description = "I search with query")
+    public void search(String query) {
+        textbox(name).setText(query);
+    }
+}
+```
+
+Now let's execute the tests again and view reports
+
+```$bash
+./gradlew clean build runWebTests && ./gradlew allureServe
+```
+
+You will find that the tests now record a step and a screenshot
+
+![](../assets/allure_report_with_screenshot.png)
+
+Congratulations, you have successfully kickstarted web automation with ekam.
+
+Read further to understand how to get started with Mobile and API. 
