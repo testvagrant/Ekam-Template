@@ -3,15 +3,27 @@
 Let us do a quick swag mobile app login as part of this quick guide.
 
 ## Pre-requisite
+
 * Connect a physical device or an emulator
 
 ## Step 1
+
 Download a sample android app
+
 ```bash
 cd app && wget https://github.com/testvagrant/Ekam-Template/releases/download/androidapp/sample_app.apk && cd ..
 ```
+
+Download a sample iOS app
+
+```bash
+cd app && wget https://github.com/testvagrant/Ekam-Template/releases/download/iosapp/sample_app.ipa && cd ..
+```
+
 ## Step 2
+
 Lets update the `mobilefeed.json` in `src/test/resources` with below content
+
 ```json
 {
   "desiredCapabilities": [
@@ -44,6 +56,7 @@ Lets update the `mobilefeed.json` in `src/test/resources` with below content
 ```
 
 ## Step 3
+
 Add the `mobilefeed` to `config/default.properties`
 
 ```properties
@@ -51,6 +64,7 @@ mobile.feed:mobilefeed
 ```
 
 ## Step 4
+
 Lets a sample mobile screen for login
 
 ```java
@@ -93,6 +107,7 @@ public class LoginScreen extends MobileScreen {
 ```
 
 ## Step 5
+
 Lets add a sample test in `src/test/java/mobile/MobileExampleTest.java`
 
 ```java
@@ -112,24 +127,34 @@ public class MobileExampleTest extends MobileTest {
 ```
 
 ## Step 6
+
 Let now run the test. From your terminal execute
+
 ```$bash
 ./gradlew clean build runMobileTests
 ```
 
 ## Step 7
+
 Ekam by default generates an allure report. To view the recent run execute below command
+
 ```$bash
 ./gradlew allureServe
 ```
+
 The command once executed successfully will launch a report on your default browser.
 
 ![](../assets/allure_home_screen.png)
 ![](../assets/allure_mobile_report.png)
 
-These are the bare minimum steps required to build and run web tests on ekam. But below are some additional steps to dive bit deeper into ekam features.
+These are the bare minimum steps required to build and run web tests on ekam. But below are some additional steps to
+dive bit deeper into ekam features.
+
 ## Run on different platforms
-By default, Ekam runs mobile tests on Android. To run on different platform or set a default platform, add a property `mobile.target` in `default.properties`
+
+By default, Ekam runs mobile tests on Android. To run on different platform or set a default platform, add a
+property `mobile.target` in `default.properties`
+
 ```properties
 # Supported values <any | android | ios>
 mobile.target:ios
@@ -138,7 +163,9 @@ mobile.target:ios
 Now the tests will start executing on iOS.
 
 ## Capture screenshot
-If you look at the allure reports, there are no steps recorded or any screenshot shown. To capture step metadata add a `@MobileStep` to screens.
+
+If you look at the allure reports, there are no steps recorded or any screenshot shown. To capture step metadata add
+a `@MobileStep` to screens.
 
 ```java
 import com.testvagrant.ekam.commons.annotations.MobileStep;

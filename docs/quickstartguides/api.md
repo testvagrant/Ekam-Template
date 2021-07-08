@@ -3,20 +3,27 @@
 We will use https://jsonplaceholder.typicode.com to create sample API tests.
 
 ## Step 1
+
 Create a file `hosts.json` in `src/test/resources`
+
 ```json
 {
   "baseUrl": "https://jsonplaceholder.typicode.com"
 }
 ```
+
 ## Step 2
+
 Update the `default.properties` file with the hosts name
+
 ```bash
 api.hosts:hosts
 ```
 
 ### Step 3
+
 Create a model called Post to capture response
+
 ```java
 import lombok.*;
 
@@ -34,6 +41,7 @@ public class Posts {
 ```
 
 ## Step 4
+
 Create a sample service in `src/test/java/api`
 
 ```java
@@ -49,6 +57,7 @@ public interface PostsService {
 ```
 
 ## Step 5
+
 Create a sample client to consume the service
 
 ```java
@@ -78,7 +87,9 @@ public class PostsClient extends RetrofitBaseClient {
 ```
 
 ### Step 6
+
 Now lets write a test to interact with the client in `src/test/java/api/ApiExampleTest`
+
 ```java
 import com.testvagrant.ekam.commons.LayoutInitiator;
 import com.testvagrant.ekam.testBases.testng.APITest;
@@ -99,21 +110,25 @@ public class APIExampleTest extends APITest {
 ```
 
 ## Step 4
+
 Let now run the test. From your terminal execute
+
 ```$bash
 ./gradlew clean build runApiTests
 ```
 
 ## Step 5
+
 Ekam by default generates an allure report. To view the recent run execute below command
+
 ```$bash
 ./gradlew allureServe
 ```
+
 The command once executed successfully will launch a report on your default browser.
 
 ![](../assets/allure_home_screen.png)
 ![](../assets/allure_api_reports.png)
-
 
 Congratulations, you have successfully kick-started api automation with ekam.
 

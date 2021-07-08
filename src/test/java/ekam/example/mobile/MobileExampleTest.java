@@ -4,6 +4,4 @@ import com.testvagrant.ekam.testBases.testng.MobileTest;
 import org.testng.annotations.Test;
 
 @Test(groups = "mobile")
-public class MobileExampleTest extends MobileTest {
-
-}
+public class MobileExampleTest extends MobileTest {}

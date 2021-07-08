@@ -60,7 +60,7 @@ dependencies {
 
 tasks.withType(Test) {
     systemProperties = [
-            config         :  System.getProperty("config")
+            config: System.getProperty("config")
     ]
 }
 
@@ -83,7 +83,7 @@ task runWebTests(type: Test) {
 
 task runWebTestsOnCloud(type: Test) {
     systemProperties = [
-            config         :  "web.remote"
+            config: "web.remote"
     ]
     filter {
         excludeTestsMatching "*.mobile.*"
@@ -151,7 +151,6 @@ task runDbTests(type: Test) {
         outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
     }
 }
-
 
 
 allure {
