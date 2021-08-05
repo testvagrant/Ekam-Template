@@ -16,11 +16,11 @@ repositories {
 
 dependencies {
     // ekam
-    implementation('com.testvagrant.ekam:ekam:0.1.2-beta')
+    implementation('com.testvagrant.ekam:ekam:0.2.3-beta')
     implementation('com.testvagrant.ekam:ekam-api:0.0.2-alpha')
-    implementation('com.testvagrant.ekam:ekam-config:0.0.5-beta')
-    implementation('com.testvagrant.ekam:ekam-commons:0.0.6-beta')
-    implementation('com.testvagrant.ekam:ekam-atoms:0.0.1-beta')
+    implementation('com.testvagrant.ekam:ekam-config:1.0.1')
+    implementation('com.testvagrant.ekam:ekam-commons:0.0.9-beta')
+    implementation('com.testvagrant.ekam:ekam-atoms:0.0.4-beta')
 
 
     // appium
