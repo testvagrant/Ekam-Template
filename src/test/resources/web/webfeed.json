@@ -1,11 +1,9 @@
 {
   "desiredCapabilities": {
-    "pageLoadStrategy": "eager"
   },
   "arguments": [
   ],
   "preferences": {
-    "managed_default_content_settings.cookies": 2
   },
   "extensions": [
   ],

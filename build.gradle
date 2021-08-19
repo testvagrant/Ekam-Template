@@ -4,7 +4,6 @@ plugins {
 }
 
 group 'ekam.template'
-version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -16,46 +15,43 @@ repositories {
 
 dependencies {
     // ekam
-    implementation('com.testvagrant.ekam:ekam:0.2.4-beta')
-    implementation('com.testvagrant.ekam:ekam-api:0.0.3-alpha')
-    implementation('com.testvagrant.ekam:ekam-config:1.0.2')
-    implementation('com.testvagrant.ekam:ekam-commons:0.0.9-beta')
-    implementation('com.testvagrant.ekam:ekam-atoms:0.0.4-beta')
-
+    implementation('com.testvagrant.ekam:ekam:0.3.1-beta')
+    implementation('com.testvagrant.ekam:ekam-api:0.1.0')
+    implementation('com.testvagrant.ekam:ekam-atoms:0.1.0')
 
     // appium
     implementation('io.appium:java-client:7.5.1')
 
     //AssertJ
-    implementation 'org.assertj:assertj-core:3.19.0'
+    implementation('org.assertj:assertj-core:3.20.2')
 
     // selenium
     implementation('org.seleniumhq.selenium:selenium-java:3.141.59')
 
     // google
-    implementation('com.google.guava:guava:28.0-jre')
     implementation('com.google.inject:guice:5.0.1')
 
     // Test frameworks
-    testImplementation('org.testng:testng:6.14.3')
-    testImplementation('io.cucumber:cucumber-java:4.8.1')
-    testImplementation('io.cucumber:cucumber-testng:4.8.1')
+    testImplementation('org.testng:testng:7.4.0')
+    testImplementation('io.cucumber:cucumber-java:6.11.0')
+    testImplementation('io.cucumber:cucumber-testng:6.11.0')
 
     // square
     implementation('com.squareup.retrofit2:retrofit:2.9.0')
     implementation('com.squareup.retrofit2:converter-gson:2.9.0')
-    implementation('com.squareup.okhttp3:logging-interceptor:3.8.0')
+    implementation('com.squareup.okhttp3:logging-interceptor:4.9.1')
 
     //lombok
-    implementation('org.projectlombok:lombok:1.18.12')
-    annotationProcessor('org.projectlombok:lombok:1.18.12')
-    testImplementation('org.projectlombok:lombok:1.18.12')
-    testAnnotationProcessor('org.projectlombok:lombok:1.18.12')
+    implementation('org.projectlombok:lombok:1.18.20')
+    annotationProcessor('org.projectlombok:lombok:1.18.20')
+    testImplementation('org.projectlombok:lombok:1.18.20')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.20')
 
     // jdbi
     implementation('org.jdbi:jdbi:2.78')
 
-    implementation('org.awaitility:awaitility:4.0.3')
+    // Generic wait
+    implementation('org.awaitility:awaitility:4.1.0')
 }
 
 tasks.withType(Test) {
@@ -81,27 +77,7 @@ task runWebTests(type: Test) {
     }
 }
 
-task runWebTestsOnCloud(type: Test) {
-    systemProperties = [
-            config: "web.remote"
-    ]
-    filter {
-        excludeTestsMatching "*.mobile.*"
-        excludeTestsMatching "*.api.*"
-        excludeTestsMatching "*.db.*"
-    }
-    outputs.upToDateWhen { false }
-    useTestNG {
-        parallel = "methods"
-        threadCount Integer.parseInt(System.getProperty("sessions", "2"))
-        includeGroups System.getProperty("tags", "web")
-        testLogging.showStandardStreams = true
-        useDefaultListeners true
-        outputDirectory = file("$buildDir/" + System.getProperty('tags', 'NONE'))
-    }
-}
-
-task runMobileTestsOnCloud(type: Test) {
+task runMobileTests(type: Test) {
     filter {
         excludeTestsMatching "*.web.*"
         excludeTestsMatching "*.api.*"
@@ -110,7 +86,7 @@ task runMobileTestsOnCloud(type: Test) {
     outputs.upToDateWhen { false }
     useTestNG {
         parallel = "methods"
-        threadCount Integer.parseInt(System.getProperty("sessions", "4"))
+        threadCount Integer.parseInt(System.getProperty("sessions", "1"))
         includeGroups System.getProperty("tags", "mobile")
         testLogging.showStandardStreams = true
         useDefaultListeners true
@@ -152,12 +128,45 @@ task runDbTests(type: Test) {
     }
 }
 
+task runCucumberWebTests(type: JavaExec) {
+    main = "io.cucumber.core.cli.Main"
+    List<String> args = this.getArgs()
+    args.addAll(["--glue", "com.testvagrant.ekam.example.web.steps"])
+    classpath = sourceSets.test.runtimeClasspath
+    systemProperties = [
+            config: System.getProperty("config", "default"),
+            tags  : System.getProperty("tags", "")
+    ]
+    ignoreExitValue = true
+}
+
+task runCucumberMobileTests(type: JavaExec) {
+    main = "io.cucumber.core.cli.Main"
+    List<String> args = this.getArgs()
+    args.addAll(["--glue", "com.testvagrant.ekam.example.mobile.steps"])
+    classpath = sourceSets.test.runtimeClasspath
+    systemProperties = [
+            config: System.getProperty("config", "default"),
+            tags  : System.getProperty("tags", "")
+    ]
+    ignoreExitValue = true
+}
+
+def getArgs() {
+    List<String> args = ["-p", "pretty",
+                         "-p", ("json:${project.buildDir}/cucumber/cucumber-report.json"),
+                         "-p", "timeline:${project.buildDir}/cucumber/timeline/",
+                         "-t", System.getProperty("tags", ""),
+                         "-p", "io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm",
+                         "--threads", System.getProperty("sessions", "1")]
+    return args
+}
 
 allure {
-    version = '2.8.1'
+    version = '2.13.2'
     autoconfigure = true
     aspectjweaver = true
-    allureJavaVersion = '2.10.0'
+    allureJavaVersion = '2.13.2'
     reportDir = new File(project.projectDir as File, '/allure-report/ui')
     resultsDir = new File(project.projectDir as File, '/allure-report/results')
     clean = true
@@ -188,11 +197,15 @@ clean {
 
 // Execution Rules
 tasks.runWebTests.dependsOn 'clean', 'build', 'createReportDir'
-tasks.runWebTestsOnCloud.dependsOn 'clean', 'build', 'createReportDir'
-tasks.runMobileTestsOnCloud.dependsOn 'clean', 'build', 'createReportDir'
+tasks.runWebTests.dependsOn 'clean', 'build', 'createReportDir'
+tasks.runMobileTests.dependsOn 'clean', 'build', 'createReportDir'
 tasks.runApiTests.dependsOn 'clean', 'build', 'createReportDir'
+tasks.runCucumberWebTests.dependsOn 'clean', 'build', 'createReportDir'
+tasks.runCucumberMobileTests.dependsOn 'clean', 'build', 'createReportDir'
 tasks.build.mustRunAfter 'clean'
 tasks.runWebTests.finalizedBy('allureReport')
-tasks.runWebTestsOnCloud.finalizedBy('allureReport')
-tasks.runMobileTestsOnCloud.finalizedBy('allureReport')
+tasks.runWebTests.finalizedBy('allureReport')
+tasks.runMobileTests.finalizedBy('allureReport')
 tasks.runApiTests.finalizedBy('allureReport')
+tasks.runCucumberWebTests.finalizedBy('allureReport')
+tasks.runCucumberMobileTests.finalizedBy('allureReport')
