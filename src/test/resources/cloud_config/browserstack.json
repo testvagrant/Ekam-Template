@@ -1,5 +1,5 @@
 {
-  "username": "<username>",
-  "accessKey": "<accesskey>",
+  "username": "${env:BROWSERSTACK_USERNAME}",
+  "accessKey": "${env:BROWSERSTACK_ACCESS_KEY}",
   "hub": "hub-cloud.browserstack.com"
 }
