@@ -16,7 +16,7 @@ repositories {
 dependencies {
     // ekam
     implementation('com.testvagrant.ekam:ekam:1.0.0')
-    implementation('com.testvagrant.ekam:ekam-atoms:0.1.0')
+    implementation('com.testvagrant.ekam:ekam-atoms:1.0.0')
     implementation('com.testvagrant.ekam:ekam-api:1.0.0')
 
     // Needed for cucumber tasks
