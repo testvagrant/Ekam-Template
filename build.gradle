@@ -15,14 +15,14 @@ repositories {
 
 dependencies {
     // ekam
-    implementation('com.testvagrant.ekam:ekam:1.0.0')
-    implementation('com.testvagrant.ekam:ekam-atoms:1.0.0')
+    implementation('com.testvagrant.ekam:ekam:1.0.2')
+    implementation('com.testvagrant.ekam:ekam-atoms:1.0.2')
     implementation('com.testvagrant.ekam:ekam-api:1.0.0')
 
     // Needed for cucumber tasks
     implementation('com.testvagrant.ekam:ekam-drivers:1.0.4')
     implementation('com.testvagrant.ekam:ekam-report-publisher:0.0.3-beta')
-    implementation('com.testvagrant.ekam:ekam-commons:1.0.0')
+    implementation('com.testvagrant.ekam:ekam-commons:1.0.2')
     implementation('com.testvagrant.ekam:ekam-config:1.0.3')
     implementation('com.testvagrant.ekam:ekam-device-manager:1.0.0')
     implementation('com.testvagrant.ekam:ekam-logger:1.0.0')
