@@ -6,6 +6,7 @@ build/
 .idea/
 .vscode/
 bin/
+out/
 .project
 allure-report/
 allure-results/
