@@ -4,8 +4,9 @@
 
 ## Get Started
 1. Clone this repository
-2. Execute example tests
-3. Start building your own tests
+2. If you are using IntelliJ IDEA, install [Ekam plugin for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/17315-ekam) to further boost test case authoring.
+3. Execute example tests in IDE & from command line
+4. Start building your own tests !!
 
 Our <a href="https://ekam.studio/quick-start/" target="_blank">quick start guide</a> would help you get started with Ekam in no time.
 
