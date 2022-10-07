@@ -1,6 +1,16 @@
 ## Ekam Template
 
-Ekam, a test automation platform, helps you to quickly get started with WEB | MOBILE | API.
+[Ekam](https://ekam.studio/), A Rapid Test Development Platform. It is a low-code & unified test automation solution, that brings speed, scale, and sophistication, right out of the box! Powered by Selenium, Appium & Retrofit. Ekam enables engineering teams to focus on delivering great software, while it provides accelerated test authoring and execution capabilities!
+
+## Get Started
+1. Clone this repository
+2. Execute example tests
+3. Start building your own tests
+
+Our <a href="https://ekam.studio/quick-start/" target="_blank">quick start guide</a> would help you get started with Ekam in no time.
+
+## Documentation
+Our <a href="https://ekam.studio/" target="_blank">Comprehensive Documentation</a>, describes various capabilities of ekam.
 
 ## Prerequisites
 
@@ -20,40 +30,13 @@ Ekam, a test automation platform, helps you to quickly get started with WEB | MO
     * <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a>
     * <a href="https://www.microsoft.com/en-us/edge" target="_blank">Edge</a>
 
-## Get Started
-
-Install `ekam-cli` npm package.
-
-```$bash
-npm install -g ekam-cli
- ```
-
-or
-
-```$bash
-yarn add -g ekam-cli
-```
-
-### Create New Project
-
-Go to the folder where you want to create a new ekam project and run below command
-
-```$bash
-ekam create -n <project_name>
- ```
-
-If you want to create a project using path, use below command
-
-```$bash
-ekam create -p <path/to/project> -n <project_name>
- ```
-
 ### Template Structure
 
 ```
 sample_project/
 +-- build.gradle
 +-- app //Store Application Under Test for Android or Ios platforms.
+    +-- sample_app.apk
     +-- <android>.apk
     +-- <ios>.app
     +-- <ios>.ipa
@@ -62,27 +45,31 @@ sample_project/
     +-- mobile.remote.properties
     +-- web.remote.properties
 +-- src/test
-    +-- java
+    +-- java/ekam/example
     ¦   +-- api 
     ¦   ¦ +-- ApiExampleTest.java 
     ¦   +-- mobile 
+    ¦   ¦ +-- screens
     ¦   ¦ +-- MobileExampleTest.java
     ¦   +-- web 
+    ¦   ¦ +-- pages
     ¦   ¦ +-- WebExampleTest.java
     +-- resources
+    ¦   +-- api
+    ¦   ¦ +-- hosts.json
     ¦   +-- cloud_config
     ¦   ¦ +-- browserstack.json
-    ¦   +-- mobilefeed.json
-    ¦   +-- webfeed.json
+    ¦   +-- data_sets
+    ¦   ¦ +-- sample.json
+    ¦   +-- db
+    ¦   ¦ +-- drivers.yml
+    ¦   +-- mobile
+    ¦   ¦ +-- mobilefeed.json
+    ¦   +-- web
+    ¦   ¦ +-- webfeed.json
+    ¦   +-- allure.properties
+
 ```
-
-Follow below quick start guides.
-
-## Quick Start Guides
-
-* [Web](docs/quickstartguides/web.md)
-* [Mobile](docs/quickstartguides/mobile.md)
-* [Api](docs/quickstartguides/api.md)
 
 ## Examples
 
