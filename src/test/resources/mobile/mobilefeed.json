@@ -1,7 +1,8 @@
 {
   "desiredCapabilities": [
     {
-      "app": "<app_name_with_extension>",
+      "app": "sample_app.apk",
+      "appWaitActivity": "com.swaglabsmobileapp.MainActivity",
       "platformName": "android",
       "automationName": "UiAutomator2"
     },

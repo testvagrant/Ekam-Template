@@ -9,7 +9,7 @@ import static com.testvagrant.ekam.commons.LayoutInitiator.Page;
 import static org.testng.Assert.assertEquals;
 
 @Test(groups = "web")
-public class NavigationTests extends WebTest {
+public class WebExampleTest extends WebTest {
 
     @TmsLink("TC-Web-001")
     @TmsLink("TC-Web-002")
