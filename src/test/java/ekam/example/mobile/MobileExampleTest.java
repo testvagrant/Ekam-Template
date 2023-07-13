@@ -12,9 +12,14 @@ public class MobileExampleTest extends MobileTest {
 
     public void shouldLoginSuccessfully() {
 
+        // 1. Arrange
+
+        // 2. Act
         boolean cartDisplayed = Screen(LoginScreen.class)
                 .login()
                 .isCartDisplayed();
+
+        // 3. Assert
         assertTrue(cartDisplayed, "Cart is not displayed");
     }
 }

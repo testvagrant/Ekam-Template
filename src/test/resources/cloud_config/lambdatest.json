@@ -1,0 +1,5 @@
+{
+  "username": "${env:LAMBDATEST_USERNAME}",
+  "accessKey": "${env:LAMBDATEST_ACCESS_KEY}",
+  "hub": "mobile-hub.lambdatest.com"
+}
