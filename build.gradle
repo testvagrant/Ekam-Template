@@ -14,12 +14,12 @@ repositories {
 
 dependencies {
     // ekam
-    implementation('com.testvagrant.ekam:ekam:1.1.1')
-    implementation('com.testvagrant.ekam:ekam-atoms:1.0.2')
+    implementation('com.testvagrant.ekam:ekam:1.2.1')
+    implementation('com.testvagrant.ekam:ekam-atoms:1.0.3')
     implementation('com.testvagrant.ekam:ekam-api:1.0.0')
 
     // Needed for cucumber tasks
-    implementation('com.testvagrant.ekam:ekam-drivers:1.0.4')
+    implementation('com.testvagrant.ekam:ekam-drivers:1.0.6')
     implementation('com.testvagrant.ekam:ekam-report-publisher:0.0.3-beta')
     implementation('com.testvagrant.ekam:ekam-commons:1.0.2')
     implementation('com.testvagrant.ekam:ekam-config:1.0.3')
@@ -27,13 +27,13 @@ dependencies {
     implementation('com.testvagrant.ekam:ekam-logger:1.0.0')
 
     // appium
-    implementation('io.appium:java-client:7.5.1')
+    implementation('io.appium:java-client:8.5.1')
 
     //AssertJ
     implementation('org.assertj:assertj-core:3.20.2')
 
     // selenium
-    implementation('org.seleniumhq.selenium:selenium-java:3.141.59')
+    implementation('org.seleniumhq.selenium:selenium-java:4.11.0')
 
     // google
     implementation('com.google.inject:guice:5.0.1')
