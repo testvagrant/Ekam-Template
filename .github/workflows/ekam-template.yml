@@ -19,6 +19,7 @@ jobs:
 
       - name: Clear Gradle Cache
         run: |
+          cd Ekam-Template
           ./gradlew clean
           rm -rf $HOME/.gradle/caches/
 
@@ -34,4 +35,5 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: |
+          cd Ekam-Template
           ./gradlew build
