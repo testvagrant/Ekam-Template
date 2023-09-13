@@ -14,34 +14,34 @@ repositories {
 
 dependencies {
     // ekam
-    implementation('com.testvagrant.ekam:ekam:1.2.1')
-    implementation('com.testvagrant.ekam:ekam-atoms:1.0.3')
-    implementation('com.testvagrant.ekam:ekam-api:1.0.0')
+    implementation('com.testvagrant.ekam:ekam:1.3.0')
+    implementation('com.testvagrant.ekam:ekam-atoms:1.0.4')
+    implementation('com.testvagrant.ekam:ekam-api:1.0.1')
 
     // Needed for cucumber tasks
-    implementation('com.testvagrant.ekam:ekam-drivers:1.0.6')
-    implementation('com.testvagrant.ekam:ekam-report-publisher:0.0.3-beta')
-    implementation('com.testvagrant.ekam:ekam-commons:1.0.2')
-    implementation('com.testvagrant.ekam:ekam-config:1.0.3')
-    implementation('com.testvagrant.ekam:ekam-device-manager:1.0.3')
+    implementation('com.testvagrant.ekam:ekam-drivers:1.0.7')
+    implementation('com.testvagrant.ekam:ekam-report-publisher:0.0.4')
+    implementation('com.testvagrant.ekam:ekam-commons:1.0.3')
+    implementation('com.testvagrant.ekam:ekam-config:1.0.4')
+    implementation('com.testvagrant.ekam:ekam-device-manager:1.0.4')
     implementation('com.testvagrant.ekam:ekam-logger:1.0.0')
 
     // appium
     implementation('io.appium:java-client:8.5.1')
 
     //AssertJ
-    implementation('org.assertj:assertj-core:3.20.2')
+    implementation('org.assertj:assertj-core:3.24.2')
 
     // selenium
     implementation('org.seleniumhq.selenium:selenium-java:4.11.0')
 
     // google
-    implementation('com.google.inject:guice:5.0.1')
+    implementation('com.google.inject:guice:7.0.0')
 
     // Test frameworks
-    testImplementation('org.testng:testng:7.4.0')
-    testImplementation('io.cucumber:cucumber-java:6.11.0')
-    testImplementation('io.cucumber:cucumber-testng:6.11.0')
+    testImplementation('org.testng:testng:7.8.0')
+    testImplementation('io.cucumber:cucumber-java:7.14.0')
+    testImplementation('io.cucumber:cucumber-testng:7.14.0')
 
     // square
     implementation('com.squareup.retrofit2:retrofit:2.9.0')
@@ -49,27 +49,27 @@ dependencies {
     implementation('com.squareup.okhttp3:logging-interceptor:4.9.1')
 
     //lombok
-    implementation('org.projectlombok:lombok:1.18.20')
-    annotationProcessor('org.projectlombok:lombok:1.18.20')
-    testImplementation('org.projectlombok:lombok:1.18.20')
-    testAnnotationProcessor('org.projectlombok:lombok:1.18.20')
+    implementation('org.projectlombok:lombok:1.18.28')
+    annotationProcessor('org.projectlombok:lombok:1.18.28')
+    testImplementation('org.projectlombok:lombok:1.18.28')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.28')
 
     //allure
     implementation('io.qameta.allure:allure-gradle:2.8.1')
-    implementation('io.qameta.allure:allure-java-commons:2.19.0')
-    implementation('io.qameta.allure:allure-testng:2.19.0')
-    implementation('io.qameta.allure:allure-okhttp3:2.19.0')
-    implementation('io.qameta.allure:allure-rest-assured:2.19.0')
-    implementation('io.qameta.allure:allure-cucumber6-jvm:2.19.0')
+    implementation('io.qameta.allure:allure-java-commons:2.24.0')
+    implementation('io.qameta.allure:allure-testng:2.24.0')
+    implementation('io.qameta.allure:allure-okhttp3:2.24.0')
+    implementation('io.qameta.allure:allure-rest-assured:2.24.0')
+    implementation('io.qameta.allure:allure-cucumber6-jvm:2.24.0')
 
     // jdbi
     implementation('org.jdbi:jdbi:2.78')
 
     // Generic wait
-    implementation('org.awaitility:awaitility:4.1.0')
+    implementation('org.awaitility:awaitility:4.2.0')
 
     // Assertion Library
-    implementation('org.assertj:assertj-core:3.20.2')
+    implementation('org.assertj:assertj-core:3.24.2')
 }
 
 tasks.withType(Test) {
